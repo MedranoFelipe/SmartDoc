@@ -3,24 +3,20 @@ from document_utils import validate_field_format, update_extraction_value
 
 def render_field(label, key, doc_index, col=None):
     """Renderiza un input field conectado al estado con validación visual."""
-    widget_key = f"doc{doc_index}-{key}" # Key única estandarizada
+    widget_key = f"doc{doc_index}-{key}" 
     doc = st.session_state.processed_data[doc_index]
     
-    # 1. Obtener el valor inicial de la extracción (solo si es la primera carga)
     initial_val = doc["extraccion"].get(key, {}).get("value", "") 
         
     if widget_key not in st.session_state:
         st.session_state[widget_key] = initial_val
         
-    # 3. El valor actual para validar es el que está en Session State
     current_val_in_state = st.session_state[widget_key] 
         
-    # Detectar errores específicos de este campo para mostrar en UI
     error = validate_field_format(key, current_val_in_state) 
     
     container = col if col else st
     
-    # Input Field
     container.text_input(
         label,
         key=widget_key, 
@@ -28,11 +24,9 @@ def render_field(label, key, doc_index, col=None):
         args=(doc_index, key)
     )
     
-    # Mostrar mensaje de error debajo del input si existe
     if error:
         container.caption(f":red[{error}]")
 
-# --- RENDERIZADORES DE FORMULARIOS ---
 
 def render_cedula_form(index):
     st.markdown("#### 👤 Información Personal")
