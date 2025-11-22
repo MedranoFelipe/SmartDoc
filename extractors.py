@@ -46,7 +46,6 @@ def extract_acta_seguro(text):
     text = ' '.join(text.upper().split())  
     
     return {
-        # Limpiamos guiones o letras de la póliza para validación numérica estricta
         "numero_poliza": find_by_regex(text, r"NÚMERO DE PÓLIZA:\s*([A-Z0-9\-]+)", clean_number),                
         "ramo": find_by_regex(text, r"RAMO:\s*(.+?)\s*(?:[•·]\s*)?TOMADOR", clean_text_basic),        
         "asegurado": find_by_regex(text, r"TOMADOR\s*/\s*ASEGURADO:\s*([A-ZÁÉÍÓÚÜÑ\s\-]+?)\s*(?:[•·]\s*)?IDENTIFICACIÓN:", clean_text_basic),
@@ -61,13 +60,15 @@ def extract_acta_seguro(text):
     }
 
 def extract_contrato(text):
+    
     text_processed = ' '.join(text.lower().split())
+    
     return {
-        "numero_contrato": find_by_regex(text_processed, r"profesionales no\.?\s*([\d\-]+)", clean_number),
-        "contratante_nombre": find_by_regex(text_processed, r"por una parte,\s*(.+?)\s*,\s*sociedad", clean_text_basic),
-        "contratante_nit": find_by_regex(text_processed, r"nit\s*([\d\.\-]+)", clean_number),
-        "contratista_nombre": find_by_regex(text_processed, r"por otra parte,\s*([a-záéíóúüñ\s]+),\s*identificada", clean_text_basic),
-        "contratista_identificacion": find_by_regex(text_processed, r"cédula de ciudadanía no\.?\s*([\d\.]+)", clean_number),
+        "numero_contrato": find_by_regex(text_processed, r"profesionales no\.?\s*([\d\-]+)", clean_number),                
+        "contratante_nombre": find_by_regex(text_processed, r"por una parte,\s*(.+?)\s*s\.?a\.?s\.?,", clean_text_basic),                
+        "contratante_nit": find_by_regex(text_processed, r"nit\s*([\d\.\-]+)", clean_number),                 
+        "contratista_nombre": find_by_regex(text_processed, r"por otra parte,\s*([a-záéíóúüñ\s]+),?\s*identificada", clean_text_basic),                
+        "contratista_identificacion": find_by_regex(text_processed, r"cédula de ciudadanía no\.?\s*([\d\.]+)", clean_number),                 
         "valor_contrato_monto": find_by_regex(text_processed, r"valor total.*?(\$[\d\.\,]+\s*cop)", clean_currency),
         "objeto_del_contrato_texto": find_by_regex(text_processed, r"cláusula primera\s*-\s*objeto:\s*(.*?)(?=cláusula segunda)", clean_text_basic),
         "duracion_inicio": find_by_regex(text_processed, r"contados a partir del ([0-9]{1,2} de [a-z]+ de \d{4})"),

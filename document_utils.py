@@ -47,8 +47,11 @@ def get_field_type(key):
         return "percentage"
             
     if key_lower in ["identificacion", "cedula", "nit", "telefono", 
-                     "numero_poliza", "numero_contrato", "contratista_identificacion", "contratante_nit", "numero_identificacion", "estatura"]:
+                     "numero_poliza", "numero_contrato", "contratista_identificacion", "contratante_nit", "numero_identificacion"]:
         return "numeric_strict"
+    
+    if key_lower in ["estatura"]:
+        return "numeric_height"
         
     if any(x in key_lower for x in ["valor", "monto", "cobertura_rc_monto", "valor_contrato_monto"]):
         return "currency"
@@ -76,10 +79,14 @@ def sanitize_value(key, value):
             return val_str
         else:            
             return ""
+    if dtype == "numeric_height":
+        val_str = re.sub(r'[^0-9\.]', '', val_str)  
+        return val_str[:3]
+    
                 
     
     if dtype == "text_strict":
-        val_str = re.sub(r'[^a-zA-Z0-9\sñÑáéíóúÁÉÍÓÚ+,.]', '', val_str)
+        val_str = re.sub(r'[^a-zA-Z0-9\sñÑáéíóúÁÉÍÓÚ+,.()]', '', val_str)
         return val_str[:50]
     
     if dtype == "text_long":                
@@ -128,8 +135,8 @@ def validate_field_format(key, value):
             return f"El texto excede el límite de 50 caracteres (actual: {len(val_str)})"        
             
     if dtype == "numeric_strict":
-        if not val_str.isdigit() or len(val_str) < 4:
-            return "Solo debe contener números (mín. 4 dígitos)"
+        if not val_str.isdigit() or len(val_str) > 10:
+            return "Solo debe contener números (max. 10 dígitos)"
             
     if dtype == "currency":
         if not re.search(r'\d', val_str):

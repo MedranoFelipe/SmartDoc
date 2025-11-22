@@ -41,16 +41,18 @@ def render_cedula_form(index):
     render_field("Nombres", "nombres", index, c2)
     render_field("Apellidos", "apellidos", index, c3)
     
-    st.markdown("#### 🧬 Datos Biométricos y Expedición")
-    c4, c5, c6, c7 = st.columns(4)
+    st.markdown("#### 📅 Datos de Origen y Características Físicas")
+    c4, c5 = st.columns(2)
     render_field("Fecha Nacimiento", "fecha_nacimiento", index, c4)
-    render_field("RH", "rh", index, c5)
-    render_field("Estatura", "estatura", index, c6)
-    render_field("Sexo", "sexo", index, c7)
-    
-    c8, c9 = st.columns(2)
-    render_field("Lugar Expedición", "lugar_expedicion", index, c8)
-    render_field("Fecha Expedición", "fecha_expedicion", index, c9)
+    render_field("Lugar Nacimiento", "lugar_nacimiento", index, c5)
+    c6, c7, c8 = st.columns(3)
+    render_field("RH", "rh", index, c6)
+    render_field("Estatura", "estatura", index, c7)
+    render_field("Sexo", "sexo", index, c8)
+    st.markdown("#### 📜 Información de Expedición")
+    c9, c10 = st.columns(2)
+    render_field("Lugar Expedición", "lugar_expedicion", index, c9)
+    render_field("Fecha Expedición", "fecha_expedicion", index, c10)
 
 def render_seguro_form(index):
     st.markdown("#### 🛡️ Detalles de la Póliza")
@@ -76,41 +78,45 @@ def render_seguro_form(index):
     render_field("Asistencia", "cobertura_asistencia", index, c9) 
 
 def render_contrato_form(index):
-    # ... (código previo) ...
-
     st.markdown("#### 📝 Condiciones del Contrato")
+    
     c3, c4, c5 = st.columns(3)
     render_field("No. Contrato", "numero_contrato", index, c3)
     render_field("Valor Total", "valor_contrato_monto", index, c4)
     render_field("Fecha Firma", "fecha_firma", index, c5)
+
+    st.markdown("#### 🏢 Datos del Contratante")
+    c_nom, c_nit = st.columns(2)
     
-    # --- BLOQUE CORREGIDO PARA text_area ---
-    st.caption("Objeto del Contrato")
+    render_field("Nombre Contratante", "contratante_nombre", index, c_nom)
+    
+    render_field("NIT", "contratante_nit", index, c_nit)
+        
+    st.markdown("#### 🧑 Datos del Contratista")
+    p_nom, p_id = st.columns(2)
+    
+    render_field("Nombre Contratista", "contratista_nombre", index, p_nom)
+    
+    render_field("Identificación (C.C.)", "contratista_identificacion", index, p_id)    
+
+    st.markdown("#### 🎯 Objeto del Contrato")
     
     widget_key = f"doc{index}-objeto_del_contrato_texto"
     doc = st.session_state.processed_data[index]
     initial_val = doc["extraccion"].get("objeto_del_contrato_texto", {}).get("value", "")
 
-    # **1. Inicializar el valor en Session State si no existe**
-    # Esto establece el valor inicial y evita el conflicto con 'value=...'
     if widget_key not in st.session_state:
         st.session_state[widget_key] = initial_val
         
-    # **2. Renderizar el widget SIN el argumento 'value'**
-    # El valor del widget ahora será automáticamente el de st.session_state[widget_key]
     st.text_area("Objeto", height=100, 
-                  key=widget_key, # Usa la clave ya definida
+                  key=widget_key, 
                   on_change=update_extraction_value, 
                   args=(index, "objeto_del_contrato_texto"))
     
-    # 3. Muestra el error de validación (similar a render_field)
     current_val_in_state = st.session_state[widget_key] 
     error = validate_field_format("objeto_del_contrato_texto", current_val_in_state) 
     if error:
-         st.caption(f":red[{error}]")
-    
-    # --- FIN BLOQUE CORREGIDO ---
-
+        st.caption(f":red[{error}]")
     c6, c7 = st.columns(2)
     render_field("Inicio Ejecución", "duracion_inicio", index, c6)
     render_field("Fin Ejecución", "duracion_fin", index, c7)
@@ -118,4 +124,3 @@ def render_contrato_form(index):
 def render_generic_form(index):
     st.info("ℹ️ El tipo de documento no fue reconocido") 
 
-# --- Generación de Reporte ---
