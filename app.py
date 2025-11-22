@@ -41,8 +41,7 @@ if 'processing_complete' not in st.session_state:
 
 c_logo, c_title = st.columns([0.5, 5])
 with c_title:
-    st.title("Plataforma Inteligente de Procesamiento")
-    st.caption("Solución técnica para la extracción y validación de documentos (Seguros Bolívar)")
+    st.title("Solución Prueba técnica - Joven Talento de Analítica - Felipe Medrano Caicedo")    
 
 st.divider()
 
@@ -65,7 +64,7 @@ with col_instruct:
     st.info("**Instrucciones:**\n1. Suba los archivos.\n2. El sistema clasificará automáticamente.\n3. Valide los campos extraídos.\n4. Exporte el reporte organizado.")
 
 if uploaded_files and not st.session_state.processing_complete:
-    if st.button("⚡ Iniciar Procesamiento con Azure AI", type="primary", use_container_width=True):
+    if st.button("⚡ Iniciar Procesamiento con Azure AI Document Intelligence", type="primary"):
         progress_bar = st.progress(0)
         status_text = st.empty()
         results = []

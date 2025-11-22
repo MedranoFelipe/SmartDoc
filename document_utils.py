@@ -31,8 +31,14 @@ def get_field_type(key):
     """Determina el tipo de dato esperado basado en la clave. Usa listas estrictas para evitar errores de substring."""
     key_lower = key.lower()
     
-    if key_lower in ["estado_poliza", "cobertura_asistencia", "estatura", "ramo", "asegurado", "nombres", "apellidos", "rh", "sexo", "lugar_nacimiento", "lugar_expedicion", "contratante_nombre", "contratista_nombre"]:
+    if key_lower in ["estado_poliza", "cobertura_asistencia", "ramo", "asegurado", "nombres", "apellidos", "lugar_nacimiento", "lugar_expedicion", "contratante_nombre", "contratista_nombre"]:
         return "text_strict" 
+    
+    if key_lower in ["sexo"]:
+        return "char"
+    
+    if key_lower in ["rh"]:
+        return "char2"
         
     if key_lower in ["objeto_del_contrato_texto"]:
         return "text_long"
@@ -41,7 +47,7 @@ def get_field_type(key):
         return "percentage"
             
     if key_lower in ["identificacion", "cedula", "nit", "telefono", 
-                     "numero_poliza", "numero_contrato", "contratista_identificacion", "contratante_nit", "numero_identificacion"]:
+                     "numero_poliza", "numero_contrato", "contratista_identificacion", "contratante_nit", "numero_identificacion", "estatura"]:
         return "numeric_strict"
         
     if any(x in key_lower for x in ["valor", "monto", "cobertura_rc_monto", "valor_contrato_monto"]):
@@ -56,9 +62,24 @@ def sanitize_value(key, value):
     """Limpia el valor ingresado según el tipo de campo."""
     dtype = get_field_type(key)
     val_str = str(value).strip() 
+
+    if dtype == "char":        
+        val_str = val_str.strip().upper()                 
+        val_str = re.sub(r'[^FM]', '', val_str)                 
+        return val_str[:1]
+
+    if dtype == "char2":        
+        val_str = val_str.strip().upper()                         
+        match = re.fullmatch(r'^(A|B|AB|O)[+-]$', val_str)
+        
+        if match:            
+            return val_str
+        else:            
+            return ""
+                
     
     if dtype == "text_strict":
-        val_str = re.sub(r'[^a-zA-Z0-9\s]', '', val_str)        
+        val_str = re.sub(r'[^a-zA-Z0-9\sñÑáéíóúÁÉÍÓÚ+,.]', '', val_str)
         return val_str[:50]
     
     if dtype == "text_long":                
