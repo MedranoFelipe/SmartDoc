@@ -75,7 +75,7 @@ La solución incluye los siguientes puntos opcionales (Bonus) que mejoran la cal
 1. **Clonar el repositorio:**
 
     ```bash
-    git clone [tu-repo-url]
+    git clone "https://github.com/MedranoFelipe/Solucion-Prueba-tecnica---Joven-Talento-de-Analitica.git"
     cd [tu-repo-name]
     ```
 
@@ -98,8 +98,8 @@ La solución incluye los siguientes puntos opcionales (Bonus) que mejoran la cal
     Crea un archivo llamado **`.env`** en la raíz del proyecto y añade tus credenciales de Azure Document Intelligence:
 
     ```bash
-    ENDPOINT="[Tu ENDPOINT de Azure AI]"
-    KEY="[Tu CLAVE de Azure AI]"
+    ENDPOINT=[Tu ENDPOINT de Azure AI]
+    KEY=[Tu CLAVE de Azure AI]
     ```
 
 5. **Ejecutar la aplicación Streamlit:**
