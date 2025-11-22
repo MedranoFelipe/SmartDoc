@@ -96,44 +96,35 @@ if uploaded_files and not st.session_state.processing_complete:
         for i in range(len(results)): revalidate_document(i)
         st.rerun()
 
-# ASUME que la función 'is_data_valid_for_export()' está definida previamente,
-# y que 'generate_excel()' también lo está.
-
 def is_data_valid_for_export():
     """
     Verifica si todos los documentos en el estado tienen el estado 'Validado'.
     Retorna True si todos son válidos, False si hay al menos uno en 'Revisar'.
     """
-    # Si no hay datos, asumimos que no es válido para exportar (o manejamos según el flujo)
     if 'processed_data' not in st.session_state or not st.session_state.processed_data:
         return False 
 
-    # Revisa si ALGÚN documento está en estado 'Revisar'
     documents_to_review = [d for d in st.session_state.processed_data if d.get("estado") == "Revisar"]
     
     return len(documents_to_review) == 0
 
 if st.session_state.processing_complete and st.session_state.processed_data:
     
-    # 1. Verificar el estado global de la data
-    # (Necesitas que is_data_valid_for_export esté disponible en este script)
     data_is_ok = is_data_valid_for_export()
     
-    # Contar documentos a revisar para mostrar en métrica
     docs_to_review = sum(1 for d in st.session_state.processed_data if d.get("estado") == "Revisar")
 
     st.markdown("### 📊 Resumen del Lote")
-    m1, m2, m3, m4, m5, m6 = st.columns(6) # Aumentamos columnas para la métrica de revisión
+    m1, m2, m3, m4, m5, m6 = st.columns(6) 
     m1.metric("Total Documentos", len(st.session_state.processed_data))
     m2.metric("Cédulas", sum(1 for d in st.session_state.processed_data if d['tipo'] == 'cedula'))
     m3.metric("Actas de Seguro", sum(1 for d in st.session_state.processed_data if d['tipo'] == 'acta_seguro'))
     m4.metric("Contratos", sum(1 for d in st.session_state.processed_data if d['tipo'] == 'contrato'))
     m5.metric("Desconocidos", sum(1 for d in st.session_state.processed_data if d['tipo'] == 'desconocido'))
-    m6.metric("🚨 Pendientes Revisión", docs_to_review) # Nueva métrica clave
+    m6.metric("🚨 Pendientes Revisión", docs_to_review) 
     
     st.divider()
     
-    # --- Lógica del Botón de Descarga ---
     c_tools_1, c_tools_2 = st.columns([3, 1])
     with c_tools_1:
         st.subheader("🔍 Validación Detallada")
@@ -146,14 +137,12 @@ if st.session_state.processing_complete and st.session_state.processed_data:
         try:
             excel_data = generate_excel(st.session_state.processed_data)
             
-            # La clave es usar 'data_is_ok' para deshabilitar el botón
             st.download_button(
                 label="📥 Descargar Reporte Excel",
                 data=excel_data,
                 file_name="Reporte_Extraccion_Consolidado.xlsx",
                 mime="application/vnd.ms-excel",
                 use_container_width=True,
-                # 🔥 DESHABILITAR si la data NO está OK (hay documentos en 'Revisar')
                 disabled=not data_is_ok 
             )
         except Exception as e:
@@ -178,7 +167,6 @@ if st.session_state.processing_complete and st.session_state.processed_data:
         else:
             col_tipo = "blue"
         
-        # Actualizamos el color según el ESTADO de validación
         if doc.get('estado') == 'Revisar':
             col_status = "red"
             status_text = "🚨 REVISAR"
@@ -187,11 +175,11 @@ if st.session_state.processing_complete and st.session_state.processed_data:
             status_text = "✅ VALIDADO"
         else:
             col_status = "blue"
-            status_text = tipo.upper() # Estado inicial o desconocido
+            status_text = tipo.upper() 
             
         with st.expander(
             f"{icon} {doc['file_name']} | Tipo: **:{col_tipo}[{tipo.upper()}]**  Estado: **:{col_status}[{status_text}]**",
-            expanded=(doc.get('estado') == 'Revisar') # Expandir automáticamente si requiere revisión
+            expanded=(doc.get('estado') == 'Revisar') 
         ):
             
             col_pdf, col_form = st.columns([0.45, 0.55], gap="large")
@@ -203,14 +191,12 @@ if st.session_state.processing_complete and st.session_state.processed_data:
             with col_form:
                 st.markdown("---")
                 
-                # Mostrar advertencias si existen
                 if doc.get('validacion'):
                     st.error("Documento con errores de validación en los siguientes campos:")
                     for error_msg in doc['validacion']:
                         field_name = error_msg.split(':')[0].strip()
-                        st.text(f"- **{field_name}**") # Usamos ** para negrita
+                        st.text(f"- **{field_name}**")
                 
-                # Renderizar formulario (sin cambios)
                 if doc['tipo'] == 'cedula':
                     render_cedula_form(i)
                 elif doc['tipo'] == 'acta_seguro':
