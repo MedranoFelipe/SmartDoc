@@ -75,7 +75,7 @@ La solución incluye los siguientes puntos opcionales (Bonus) que mejoran la cal
 1. **Clonar el repositorio:**
 
     ```bash
-    git clone [tu-repo-url]
+    git clone "https://github.com/MedranoFelipe/Solucion-Prueba-tecnica---Joven-Talento-de-Analitica.git"
     cd [tu-repo-name]
     ```
 
