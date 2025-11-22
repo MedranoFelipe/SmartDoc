@@ -98,8 +98,8 @@ La solución incluye los siguientes puntos opcionales (Bonus) que mejoran la cal
     Crea un archivo llamado **`.env`** en la raíz del proyecto y añade tus credenciales de Azure Document Intelligence:
 
     ```bash
-    ENDPOINT="[Tu ENDPOINT de Azure AI]"
-    KEY="[Tu CLAVE de Azure AI]"
+    ENDPOINT=[Tu ENDPOINT de Azure AI]
+    KEY=[Tu CLAVE de Azure AI]
     ```
 
 5. **Ejecutar la aplicación Streamlit:**
