@@ -4,7 +4,7 @@ from extractors import extract_structured_data
 from document_utils import *
 from result import *
 
-st.set_page_config(page_title="Gestión Documental IA | Seguros Bolívar", page_icon="👨‍👩‍👦", layout="wide")
+st.set_page_config(page_title="Gestión Documental IA", page_icon="🤖", layout="wide")
 
 st.markdown("""
     <style>
@@ -41,7 +41,7 @@ if 'processing_complete' not in st.session_state:
 
 c_logo, c_title = st.columns([0.5, 5])
 with c_title:
-    st.title("Solución Prueba técnica - Joven Talento de Analítica - Felipe Medrano Caicedo")    
+    st.title("SmartDoc- Felipe Medrano Caicedo")    
 
 st.divider()
 
