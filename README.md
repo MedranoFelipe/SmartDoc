@@ -1,14 +1,8 @@
-# 📄 Solución Prueba técnica - Joven Talento de Analítica - Felipe Medrano Caicedo
+# 📄 SmartDoc Analytics: Sistema Inteligente de Procesamiento y Validación de Documentos
 
-## 🌟 Resumen del Proyecto
+## 🎯 Objetivo de la aplicación
 
-Esta es una solución técnica, desarrollada para la prueba técnica de "Jóven Talento de Analítica" de Seguros Bolívar, que implementa un sistema inteligente para la **extracción, clasificación y validación de datos** a partir de documentos PDF.
-
-La plataforma utiliza **Azure Document Intelligence** (anteriormente Form Recognizer) para la lectura inicial de los documentos y **Streamlit** para proveer un *front-end* interactivo que permite al usuario revisar y corregir los datos antes de exportarlos en un reporte consolidado.
-
-## 🎯 Objetivo de la Prueba
-
-El proyecto cumple con los siguientes requisitos funcionales solicitados en el documento **`Prueba Tecnica Jovenes Talento.pdf`**:
+El proyecto cumple con los siguientes requisitos funcionales:
 
 1. **Clasificación de Documentos:** Capacidad para identificar y clasificar tres tipos de documentos: **Cédulas**, **Actas de Seguro** y **Contratos**.
 2. **Extracción de Datos:** Implementación de lógica de negocio (usando RegEx) para extraer campos estructurados y no estructurados específicos de cada tipo de documento.
