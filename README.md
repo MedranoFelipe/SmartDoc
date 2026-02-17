@@ -1,4 +1,4 @@
-# 📄 SmartDoc Analytics: Sistema Inteligente de Procesamiento y Validación de Documentos
+# 📄 Sistema Inteligente de Procesamiento y Validación de Documentos
 
 ## 🎯 Objetivo de la aplicación
 
